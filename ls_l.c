@@ -35,8 +35,8 @@ int main(int argc,char *argv[])
 	while((entry = readdir(d))!=NULL)// read each file one by one
 	{
 		stat(entry->d_name,&buff); // get complete file information in object of structure stat
-	   	struct group *gp = getgrgid(buff.st_gid);// get groupname from groupid
-		struct passwd *pw = getpwuid(buff.st_uid);//get username from user id
+	   	gp = getgrgid(buff.st_gid);// get groupname from groupid
+		pw = getpwuid(buff.st_uid);//get username from user id
 		info = localtime(&(buff.st_mtime)); // getting mtime details in structure tm
 		strftime(time_buff,sizeof(time_buff),"%b %d %H:%M",info); //getting required details from structure to string time_buff
 	   if(strcmp(entry->d_name,".")!=0 && strcmp(entry->d_name,"..")!=0 && entry->d_name[0]!='.')//skip hidden files
