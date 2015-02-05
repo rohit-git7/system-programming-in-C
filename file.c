@@ -1,23 +1,34 @@
+/*
+Implementing basic file operations in C.
+creat()
+open()
+read()
+write()
+close()
+*/
+
 #include<stdio.h>
-#include<fcntl.h>
-#include<unistd.h>
+#include<fcntl.h>// for read() write() open() creat()
+#include<unistd.h>// O_WRONLY STDOUT_FILENO STDIN_FILENO
 int main()
 {
 	int fd,fd1,n;
 	char buff[1024];
-	fd = creat("test.txt",0644);
+	fd = creat("test.txt",0644);// create a file
 	if(fd == -1)
 	{
-		perror("Error");
+		perror("Error");//report error if file canot be created
 	}
 
-	fd1 = open("test.txt",O_WRONLY);
-	
-	while(n=read(STDIN_FILENO,buff,1)>0)
+	fd1 = open("test.txt",O_WRONLY);// open file in write only mode. we can also use O_CREAT flag with open() to create file if it is not present 
+	if(fd1 == -1)
 	{
-		write(fd1,buff,n);
+		perror("Error");//report error if file cannot be opened
 	}
-close(fd);
-close(fd1);
+	while(n=read(STDIN_FILENO,buff,1)>0)// reading from standard input
+	{
+		write(fd1,buff,n);//writing to file with file descriptor fd1
+	}
+close(fd1);// close file
 return 0;
 }
