@@ -5,6 +5,8 @@ open()
 read()
 write()
 close()
+STDIN_FILENO: file descriptor for standard input. we cn also use '0'
+STDOUT_FILENO: file descriptor for standard output. we cn also use '1'
 */
 
 #include<stdio.h>
@@ -14,7 +16,7 @@ int main()
 {
 	int fd,fd1,n;
 	char buff[1024];
-	fd = creat("test.txt",0644);// create a file
+	fd = creat("test.txt",0644);// create a file if not present. otherwise it will truncate file to zero
 	if(fd == -1)
 	{
 		perror("Error");//report error if file canot be created
