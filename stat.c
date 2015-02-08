@@ -1,6 +1,11 @@
-#include<sys/stat.h>
+/*
+Program to show the details about a file name.
+To run:
+	./executable file-name
+*/
+#include<sys/stat.h>//for stat()
 #include<stdio.h>
-#include<stdlib.h>
+#include<stdlib.h>//exit()
 int main(int argc, char *argv[])
 {
 	struct stat buff;
@@ -15,20 +20,20 @@ int main(int argc, char *argv[])
 		printf("Few arguments\n");
                 exit(0);	
 	}
-	stat(argv[1],&buff);
+	stat(argv[1],&buff);// get file details in structure
 	
-	if(buff.st_mode & S_IFREG)
+	if(buff.st_mode & S_IFREG)//whether file is a regular file
 	{
 		reg=1;
 	}
 	
-	if(buff.st_mode & S_IFDIR)
+	if(buff.st_mode & S_IFDIR)// whether file is a directory
         {
                 dir=1;
         }
 
 	
-
+//Checking for read write and execute permissions for user , group and others
 	if(buff.st_mode & S_IRUSR)
 	{
 		usr+=4;
