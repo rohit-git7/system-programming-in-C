@@ -1,3 +1,8 @@
+/*
+A small program that gives an example of how a pipe works.
+The array of two file descriptors is fd[2].
+Whatever is written to fd[1] will be read from fd[0].
+*/
 #include<stdio.h>
 #include<string.h>
 int main()
