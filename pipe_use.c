@@ -1,7 +1,10 @@
+/*
+Program to show use of pipe for interprocess communication
+*/
 #include<stdio.h>
-#include<unistd.h>
-#include<stdlib.h>
-#include<string.h>
+#include<unistd.h>//pid_t
+#include<stdlib.h>//exit()
+#include<string.h>//strlen()
 int main()
 {
         int fd[2], nbytes;
@@ -11,27 +14,27 @@ int main()
 
         pipe(fd);
         
-        if((pd = fork()) == -1)
+        if((pd = fork()) == -1)//forking process
         {
-                perror("ERROR");
+                perror("ERROR");//error in fork()
                 exit(1);
         }
 
-        if(pd == 0)
+        if(pd == 0)//child process
         {
-                /* Child process closes up input side of pipe */
+                // Child process closes up input side of pipe
                 close(fd[0]);
 
-                /* Send "string" through the output side of pipe */
+                // Send "str" through the output side of pipe
                 write(fd[1], str, (strlen(str)+1));
                 exit(0);
         }
-        else
+        else// parent process
         {
-                /* Parent process closes up output side of pipe */
+                // Parent process closes up output side of pipe
                 close(fd[1]);
 
-                /* Read in a string from the pipe */
+                // Read in a string from the pipe
                 nbytes = read(fd[0], buffer, sizeof(buffer));
                 printf("Received string: %s", buffer);
         }
