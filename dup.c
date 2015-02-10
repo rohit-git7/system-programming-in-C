@@ -1,5 +1,6 @@
 /*
 Simple program to show the use of dup() system call in C.
+STDOUT_FILENO 1
 */
 #include <unistd.h> //dup() write()
 #include <stdlib.h> //exit() 
