@@ -1,3 +1,6 @@
+/*
+Simple program to show the use of dup() system call in C.
+*/
 #include <unistd.h> //dup() write()
 #include <stdlib.h> //exit() 
 int main() 
@@ -10,7 +13,7 @@ int main()
 	perror("Error");
         exit(0);
     }
-    else if (write(newfd, buff, sizeof(buff)) < 0) 
+    else if (write(newfd, buff, sizeof(buff)) < 0) // write error
     { 
 	perror("Error");
         exit(0);
