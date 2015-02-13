@@ -54,6 +54,7 @@ void directory_recursive(char from_dir[],char dir[])
 		}
 			
         }
+        closedir(fd_dir);
 
 }
 
