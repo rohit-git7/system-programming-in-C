@@ -1,3 +1,7 @@
+/*
+Simple Program for login.
+Compile program with library 'lcrypt'
+*/
 #include<stdio.h>
 #include<pwd.h>
 #include<shadow.h>
