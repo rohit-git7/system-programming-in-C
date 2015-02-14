@@ -5,9 +5,10 @@ Compile program with library 'lcrypt'
 #include<stdio.h>
 #include<pwd.h>
 #include<shadow.h>
-#include<crypt.h>
+#include<crypt.h>//crypt()
 #include<stdlib.h>
-
+#include<string.h>//strcmp()
+#include<unistd.h>//getpass()
 int sys_auth_user(char *username, char *password)
 {
   struct passwd *pw;
@@ -33,12 +34,12 @@ int sys_auth_user(char *username, char *password)
 
 int main()
 {
-	char *pass=malloc(1024);
+	char *pass=(char *)malloc(1024);
 	char user[1024];
 	int result;
 	printf("Enter username: ");
-	fgets(user);
-	pass=getpasswd("Enter your password: ");
+	scanf("%s",user);
+	pass = (char *)getpass("Enter your password: ");
 	result = sys_auth_user(user,pass);
 	
 	if(result == 1)
