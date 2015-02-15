@@ -5,7 +5,7 @@ To run:
 */
 #include<stdio.h>
 #include<stdlib.h>//exit()
-#include<sys/types.h>//mode_t
+#include<sys/stat.h>//chmod()
 #include<string.h>//strtol()
 int main(int argc, char *argv[])
 {
