@@ -27,7 +27,7 @@ int main()
 	{
 		perror("Error");//report error if file cannot be opened
 	}
-	while(n=read(STDIN_FILENO,buff,1)>0)// reading from standard input
+	while((n=read(STDIN_FILENO,buff,1))>0)// reading from standard input
 	{
 		write(fd1,buff,n);//writing to file with file descriptor fd1
 	}
