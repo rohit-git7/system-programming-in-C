@@ -36,7 +36,7 @@ int main()
 
                 // Read in a string from the pipe
                 nbytes = read(fd[0], buffer, sizeof(buffer));
-                printf("Received string: %s", buffer);
+                printf("Received string with %d bytes:\n %s",nbytes,buffer);
         }
         
         return(0);
