@@ -6,6 +6,7 @@ getppid(): get parent process ID
 #include<stdio.h>
 #include<stdlib.h>//exit()
 #include<unistd.h>//pid_t
+#include<sys/wait.h>//wait()
 int main()
 {
 	int status;
