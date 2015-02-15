@@ -4,6 +4,7 @@ The array of two file descriptors is fd[2].
 Whatever is written to fd[1] will be read from fd[0].
 */
 #include<stdio.h>
+#include<unistd.h>//pipe() read() write()
 #include<string.h>
 int main()
 {
