@@ -12,13 +12,13 @@ int main(int argc, char *argv[])
 	int usr=0,grp=0,oth=0,reg=0,dir=0;
 	if(argc > 2)
 	{	printf("Too many arguments\n");
-		exit(0);
+		exit(1);
 	}
 	else
 	if(argc < 2)
 	{
 		printf("Few arguments\n");
-                exit(0);	
+                exit(1);	
 	}
 	stat(argv[1],&buff);// get file details in structure
 	
@@ -82,8 +82,7 @@ int main(int argc, char *argv[])
 		printf("File size: %lld bytes\n",(long)buff.st_size);
 		printf("File permissions: %d%d%d\n",usr,grp,oth);	
 	}
-	else
-	if(dir == 1)
+	else if(dir == 1)
 	{
 		printf("Directory details\n");
 		printf("No. of links: %d\n",buff.st_nlink);
