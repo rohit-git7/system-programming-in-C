@@ -1,8 +1,13 @@
-#include<unistd.h>
+/*
+Program to display the details corresponding to user logged in.
+To run:
+       ./executable
+*/
+#include<unistd.h>//getlogin()
 #include<stdio.h>
-#include<utmp.h>
-#include<string.h>
-#include<time.h>
+#include<utmp.h>//struct utmp
+#include<string.h>//strcmp()
+#include<time.h>//ctime()
 int main()
 {
        char *s,*c;
