@@ -1,3 +1,8 @@
+/*
+Implementing linux command 'date' in C.
+To run:
+	./executable
+*/
 #include<stdio.h>
 #include<time.h>
 
