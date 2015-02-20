@@ -17,14 +17,14 @@ int foo(int fd, char *buff, int b_size, int n, int skip)
 	
 	while((k = read(fd,buff,b_size)) > 0)
 	{
-		if( k < b_size || n == -1)
+		if( k < b_size || n == -1)//operation unsuccessful if block has size less than b_size or no. of blocks are less than n
 			return -1;
 	
-		sum += k;	
+		sum += k;//count read bytes
 		n--;
-		lseek(fd,skip,SEEK_CUR);
+		lseek(fd,skip,SEEK_CUR);//skip bytes
 	}
-	if(n > 0)
+	if(n > 0)//operation unsuccessful if no. of blocks are less than n
 		return -1;
 	else
 		return sum;
