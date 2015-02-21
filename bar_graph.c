@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	struct stat buf;
 
 	memset(arr,0,sizeof(arr));
-	memset(out,0,sizeof(arr));
+	memset(out,0,sizeof(out));
 	
 	strcpy(dir,argv[1]);
 	while((entry = readdir(fd_dir)) != NULL)//read the directory contents
