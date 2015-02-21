@@ -2,8 +2,9 @@
 Write a program that takes directory name and file types as arguments and returns a bar graph representing
 % of that file type out of 10.
 For example
- ./a.out foo c py sh will return bar graph representation of files of type '.c' '.py' '.h' in
+ ./a.out path_to_foo/ c py sh will return bar graph representation of files of type '.c' '.py' '.h' in
  directory foo. 
+ NOTE: Enter actual path of directory. Do not enter relative path.
 */
 #include<stdio.h>
 #include<dirent.h>//DIR * opendir() readdir() closedir()
