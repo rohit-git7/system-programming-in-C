@@ -1,8 +1,15 @@
+/*
+Write a program that takes directory name and file types as arguments and returns a bar graph representing
+% of that file type out of 10.
+For example
+ ./a.out foo c py sh will return bar graph representation of files of type '.c' '.py' '.h' in
+ directory foo. 
+*/
 #include<stdio.h>
-#include<dirent.h>
-#include<sys/stat.h>
-#include<string.h>
-#include<unistd.h>
+#include<dirent.h>//DIR * opendir() readdir() closedir()
+#include<sys/stat.h>//stat()
+#include<string.h>//strlen() memset()
+#include<unistd.h>//S_IFDIR
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +26,7 @@ int main(int argc, char *argv[])
 	char dir[1024];
 	char *p;
 
-	DIR *fd_dir = opendir(argv[1]);
+	DIR *fd_dir = opendir(argv[1]);//open directory
 	struct dirent *entry;
 	struct stat buf;
 
@@ -27,28 +34,26 @@ int main(int argc, char *argv[])
 	memset(out,0,sizeof(arr));
 	
 	strcpy(dir,argv[1]);
-	while((entry = readdir(fd_dir)) != NULL)
+	while((entry = readdir(fd_dir)) != NULL)//read the directory contents
 	{
-		if(entry->d_name[0] == '.')
+		if(entry->d_name[0] == '.')//skip hidden files
 			continue;
 		temp = 0;
 		temp1 = 0;
 		strcat(dir,entry->d_name);
 		stat(dir,&buf);
-	//	printf("%s\n",entry->d_name);	
 		
-		if(S_IFREG & buf.st_mode)
+		if(S_IFREG & buf.st_mode)//if entry is regular file
 		{
-			total += (int)buf.st_size;
+			total += (int)buf.st_size;//total size of regular files
 			len = strlen(entry->d_name);
-	//		printf("%s\n",entry->d_name);	
 
 			for(j = len - 1; j >= 0; j--)
 			{
 				if(entry->d_name[j] == '.')
 				{
 					temp = 1;
-					p = (entry->d_name + j + 1);
+					p = (entry->d_name + j + 1);//get file type
 					for(i = 2;i < argc; i++)
 					{
 						if(strcmp(p,argv[i]) == 0)
@@ -63,7 +68,7 @@ int main(int argc, char *argv[])
 			}
 		
 		
-		if(temp != 1 && temp1 != 1)
+		if(temp != 1 && temp1 != 1)//if file type is not mentioned in arguments, add in other
 		{
 			arr[argc-2] += (int)buf.st_size;
 		}
