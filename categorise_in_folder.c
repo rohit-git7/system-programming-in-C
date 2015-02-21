@@ -2,6 +2,8 @@
 Write a program that will categorize all files in the current directory based on their file type. 
 That is all .txt file in one directory called txt, all .bmp files in another directory called bmp etc.
 The argument to the program is a directory name.
+
+Note: Argument should be complete directory name
 */
 #include<stdio.h>
 #include<dirent.h>
