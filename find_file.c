@@ -1,15 +1,28 @@
+/*
+Implementing linux command `find` including following flags:
+-maxdepth x
+-mindepth x
+-size +x
+-size -x
+-size x
+-name filename
+-iname filename
+-perm permissions
+-empty
+-type filetype
+*/
 #include<stdio.h>
 #include<dirent.h>
 #include<unistd.h>
-#include<bsd/unistd.h>
+#include<bsd/unistd.h>//strmode()
 #include<string.h>
 #include<sys/stat.h>
 #include<fcntl.h>
-#include<stdlib.h>
-#include<ctype.h>
+#include<stdlib.h>//exit()
+#include<ctype.h>//isdigit()
 #include<sys/types.h>
 
-int create_perm_int(char *perm, char *argv)
+int check_permissions(char *perm, char *argv)//check files with given permissions
 {
 	int i = 0;
 	int j = 1;
@@ -17,7 +30,7 @@ int create_perm_int(char *perm, char *argv)
 	for(i = 0, j = 1; perm[j] != '\0' || argv[i] == '\0'; i++,j += 3)
 	{
 
-		if(i == 0)
+		if(i == 0)// user permissions
 		{
 			if(argv[i] == 55)
 			{	
@@ -68,7 +81,7 @@ int create_perm_int(char *perm, char *argv)
 			}
 		}
 	
-		if(i == 1)
+		if(i == 1)//group permissions
 		{
 			if(argv[i] == 55)
 			{	
@@ -120,7 +133,7 @@ int create_perm_int(char *perm, char *argv)
 	
 		}
 		
-		if(i == 2)
+		if(i == 2)//other permissions
 		{
 			if(argv[i] == 55)
 			{	
@@ -177,11 +190,11 @@ int create_perm_int(char *perm, char *argv)
 }
 
 
-int check_mode(char *str)
+int check_mode(char *str)// check if mode is permissible value
 {
 	int i = 0;
 	
-	if(strlen(str) < 3 || strlen(str) > 4)
+	if(strlen(str) != 3)
 		return -1;
 
 	for( i = 0; str[i] != '\0';i++)
@@ -193,7 +206,7 @@ int check_mode(char *str)
 	return 1;
 }
 
-int check_int(char *str)
+int check_int(char *str)// check if given argument is integer or not
 {
 	int i = 0;
 	
@@ -207,7 +220,7 @@ int check_int(char *str)
 }
 
 
-void directory_recursive(char *argv[],char *from_dir,int argc,int maxdepth, int mindepth)
+void directory_recursive(char *argv[],char *from_dir,int argc,int maxdepth, int mindepth)// Recursively traverse files in directory
 {
 	int ret = 0;
 	int size;
@@ -463,8 +476,8 @@ void directory_recursive(char *argv[],char *from_dir,int argc,int maxdepth, int 
 						exit(1);
 					}
 						
-					strmode(buff.st_mode,perm);
-					ret = create_perm_int(perm,argv[n+1]);	
+					strmode(buff.st_mode,perm); // Get file permissions in string
+					ret = check_permissions(perm,argv[n+1]);	
 	
 					if(ret == -1)
 					{
