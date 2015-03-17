@@ -21,6 +21,209 @@ Implementing linux command `find` including following flags:
 #include<stdlib.h>//exit()
 #include<ctype.h>//isdigit()
 #include<sys/types.h>
+#include<time.h>
+
+int file_access_details(time_t file_time,int hours,char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-atime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+	
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) == (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+int file_access_details_less(time_t file_time,int hours, char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-atime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) < (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+int file_access_details_more(time_t file_time,int hours,char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-atime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+	
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) > (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+int file_change_details(time_t file_time,int hours,char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-ctime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+	
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) == (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+
+int file_change_details_less(time_t file_time,int hours, char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-ctime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) < (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+int file_change_details_more(time_t file_time,int hours,char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-ctime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) > (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+
+int file_modification_details(time_t file_time,int hours,char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-mtime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+	
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) == (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+
+int file_modification_details_less(time_t file_time,int hours, char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-mtime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) < (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
+int file_modification_details_more(time_t file_time,int hours,char *argv)
+{
+	int temp;
+	if(strcmp(argv,"-mtime") == 0)
+	{
+		temp = 3600*24;
+	}
+	else
+	{
+		temp = 60*24;
+	}
+
+	time_t curtime;
+	
+	time(&curtime);
+
+	if((curtime - file_time) > (temp * hours))	
+		return 1;
+	else
+		return -1;
+}
+
 
 int check_permissions(char *perm, char *argv)//check files with given permissions
 {
@@ -232,7 +435,7 @@ void directory_recursive(char *argv[],char *from_dir,int argc,int maxdepth, int 
 	char *perm = (char *)malloc(1024);
 
         DIR *fd_dir = opendir(from_dir);
-
+	
         struct dirent *entry;
 	struct stat buff;
 
@@ -490,7 +693,198 @@ void directory_recursive(char *argv[],char *from_dir,int argc,int maxdepth, int 
 					}				
 					
 				}
+				
+				if(strcmp(argv[n],"-mtime") == 0 || strcmp(argv[n],"-mmin") == 0)
+				{
+					int ret2;
+					int ret1;
 
+					ret = check_int(argv[n+1]);
+					if( ret == -1)
+					{
+						ret1 = check_int(&argv[n+1][1]);
+						if(ret1 == -1)
+						{
+							printf("Error: -mtime expects integer argument\n");
+							exit(1);
+						}
+						else
+						{
+							if(argv[n+1][0] == '+')
+							{
+								ret2 = file_modification_details_more(buff.st_mtime,atoi(&argv[n+1][1]),argv[n]);
+								if(ret2 == -1)
+								{
+									file_notfound = 1;
+									break;
+								}
+								else
+								{
+									file_found = 1;
+								}				
+
+							}
+							else if(argv[n+1][0] == '-')
+							{
+								ret2 = file_modification_details_less(buff.st_mtime,atoi(&argv[n+1][1]),argv[n]);
+								if(ret2 == -1)
+								{
+									file_notfound = 1;
+									break;
+								}
+								else
+								{
+									file_found = 1;
+								}				
+
+							}
+						
+
+						}
+					}
+					else
+					{
+						ret1 = file_modification_details(buff.st_mtime,atoi(argv[n+1]),argv[n]);
+						if(ret1 == -1)
+						{
+							file_notfound = 1;
+							break;
+						}
+						else
+						{
+							file_found = 1;
+						}				
+			
+					}	
+				}
+
+				if(strcmp(argv[n],"-ctime") == 0 || strcmp(argv[n],"-cmin") == 0)
+				{
+					int ret2;
+					int ret1;
+
+					ret = check_int(argv[n+1]);
+					if( ret == -1)
+					{
+						ret1 = check_int(&argv[n+1][1]);
+						if(ret1 == -1)
+						{
+							printf("Error: -ctime expects integer argument\n");
+							exit(1);
+						}
+						else
+						{
+							if(argv[n+1][0] == '+')
+							{
+								ret2 = file_change_details_more(buff.st_ctime,atoi(&argv[n+1][1]),argv[n]);
+								if(ret2 == -1)
+								{
+									file_notfound = 1;
+									break;
+								}
+								else
+								{
+									file_found = 1;
+								}				
+
+							}
+							else if(argv[n+1][0] == '-')
+							{
+								ret2 = file_change_details_less(buff.st_ctime,atoi(&argv[n+1][1]),argv[n]);
+								if(ret2 == -1)
+								{
+									file_notfound = 1;
+									break;
+								}
+								else
+								{
+									file_found = 1;
+								}				
+
+							}
+						
+
+						}
+					}
+					else
+					{
+						ret1 = file_change_details(buff.st_ctime,atoi(argv[n+1]),argv[n]);
+						if(ret1 == -1)
+						{
+							file_notfound = 1;
+							break;
+						}
+						else
+						{
+							file_found = 1;
+						}				
+			
+					}	
+				}
+				
+				if(strcmp(argv[n],"-atime") == 0 || strcmp(argv[n],"-amin") == 0)
+				{
+					int ret2;
+					int ret1;
+
+					ret = check_int(argv[n+1]);
+					if( ret == -1)
+					{
+						ret1 = check_int(&argv[n+1][1]);
+						if(ret1 == -1)
+						{
+							printf("Error: -atime expects integer argument\n");
+							exit(1);
+						}
+						else
+						{
+							if(argv[n+1][0] == '+')
+							{
+								ret2 = file_access_details_more(buff.st_atime,atoi(&argv[n+1][1]),argv[n]);
+								if(ret2 == -1)
+								{
+									file_notfound = 1;
+									break;
+								}
+								else
+								{
+									file_found = 1;
+								}				
+
+							}
+							else if(argv[n+1][0] == '-')
+							{
+								ret2 = file_access_details_less(buff.st_atime,atoi(&argv[n+1][1]),argv[n]);
+								if(ret2 == -1)
+								{
+									file_notfound = 1;
+									break;
+								}
+								else
+								{
+									file_found = 1;
+								}				
+
+							}
+						
+
+						}
+					}
+					else
+					{
+						ret1 = file_access_details(buff.st_atime,atoi(argv[n+1]),argv[n]);
+						if(ret1 == -1)
+						{
+							file_notfound = 1;
+							break;
+						}
+						else
+						{
+							file_found = 1;
+						}				
+			
+					}	
+				}
 				n++;
 				
 			}
